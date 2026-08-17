@@ -1,220 +1,93 @@
+import { useState, useMemo } from 'react'
 import './App.css'
+import founderImg from './assets/founder.jpg'
+import { plantsData } from './data/plants.js'
 
 const navItems = [
   { label: 'Home', href: '#home' },
-  { label: 'Rare Plants', href: '#collection' },
-  { label: 'Bonsai', href: '#bonsai' },
-  { label: 'About', href: '#about' },
-  { label: 'Plant Care', href: '#care' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'All Plants & Rates', href: '#collection' },
+  { label: 'Bonsai Collection', href: '#bonsai' },
+  { label: 'About Founder', href: '#about' },
+  { label: 'Plant Care Guide', href: '#care' },
+  { label: 'Nursery Gallery', href: '#gallery' },
+  { label: 'Contact & Location', href: '#contact' },
 ]
 
-const categories = [
-  {
-    icon: '🌳',
-    title: 'Rare Plants',
-    subtitle: 'Collector specimens with character',
-    image:
-      'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    icon: '🌿',
-    title: 'Bonsai',
-    subtitle: 'Elegant living sculptures',
-    image:
-      'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    icon: '🌸',
-    title: 'Flowering Plants',
-    subtitle: 'Seasonal color and fragrance',
-    image:
-      'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    icon: '🪴',
-    title: 'Indoor Plants',
-    subtitle: 'Fresh foliage for calm interiors',
-    image:
-      'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    icon: '🌱',
-    title: 'Outdoor Plants',
-    subtitle: 'Hardy greenery for gardens',
-    image:
-      'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    icon: '🏺',
-    title: 'Pots & Accessories',
-    subtitle: 'Thoughtful styling essentials',
-    image:
-      'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
-  },
+const categoriesList = [
+  'All',
+  'Bonsai',
+  'Rare Plants',
+  'Flowering Plants',
+  'Indoor Plants',
+  'Outdoor Plants',
+  'Pots & Accessories'
 ]
 
-const products = [
-  {
-    name: 'Ficus Bonsai',
-    description: 'Compact canopy, lush foliage and refined structure.',
-    status: 'Available',
-    price: '₹18,000',
-    image:
-      'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Juniper Bonsai',
-    description: 'A classic evergreen form with elegant texture and movement.',
-    status: 'Limited',
-    price: '₹22,500',
-    image:
-      'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Bougainvillea Bonsai',
-    description: 'Vibrant color and tropical charm for bright spaces.',
-    status: 'Available',
-    price: '₹16,800',
-    image:
-      'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Adenium',
-    description: 'A sculptural desert succulent with dramatic blooms.',
-    status: 'Collector’s Choice',
-    price: 'Contact for Price',
-    image:
-      'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Monstera Variegata',
-    description: 'Rare variegated foliage with airy, tropical elegance.',
-    status: 'Limited',
-    price: '₹9,200',
-    image:
-      'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Rare Philodendron',
-    description: 'An exotic trailing plant with high collector appeal.',
-    status: 'Available',
-    price: '₹7,500',
-    image:
-      'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Japanese Maple',
-    description: 'Delicate foliage and refined structure for collection spaces.',
-    status: 'Limited',
-    price: '₹26,800',
-    image:
-      'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Jade Bonsai',
-    description: 'A charming miniature tree offering longevity and calm beauty.',
-    status: 'Available',
-    price: '₹12,400',
-    image:
-      'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80',
-  },
-]
-
-const bonsaiCollection = [
-  {
-    name: 'Ficus Microcarpa',
-    age: '8 years',
-    species: 'Ficus microcarpa',
-    style: 'Formal upright',
-    difficulty: 'Easy',
-    price: '₹18,000',
-    image:
-      'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Juniperus Procumbens',
-    age: '10 years',
-    species: 'Juniperus procumbens',
-    style: 'Cascade',
-    difficulty: 'Moderate',
-    price: '₹22,500',
-    image:
-      'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Bougainvillea',
-    age: '6 years',
-    species: 'Bougainvillea spectabilis',
-    style: 'Slanting',
-    difficulty: 'Moderate',
-    price: '₹16,800',
-    image:
-      'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
-  },
-]
-
-const features = [
-  'Carefully Nurtured Plants',
-  'Rare & Unique Species',
-  'Bonsai Expertise',
-  'Healthy Plants',
-  'Safe Plant Packaging',
-  'Passion-Driven Nursery',
-]
-
-const careGuide = [
-  { title: 'How to care for bonsai', text: 'Keep roots healthy, balance watering, and ensure gentle airflow for your mini tree.' },
-  { title: 'Watering guide', text: 'Water when the topsoil begins to dry, never leaving roots saturated for long periods.' },
-  { title: 'Sunlight requirements', text: 'Place most bonsai in bright filtered light and rotate regularly for even growth.' },
-  { title: 'Soil guide', text: 'Use airy, well-draining mixes suited to the species and seasonal moisture needs.' },
-  { title: 'Repotting', text: 'Refresh roots every 1–2 years to encourage vitality and maintain compact growth.' },
-  { title: 'Pruning', text: 'Trim growth carefully to maintain form, balance foliage and encourage new buds.' },
-  { title: 'Fertilization', text: 'Feed lightly during growth seasons with balanced nutrients to support healthy foliage.' },
+const careGuideOverview = [
+  { title: 'Bonsai Pruning & Shaping', text: 'Pinch new shoots back to 2 leaves to maintain compact canopy structure and refine trunk movement.' },
+  { title: 'Balancing Water & Soil', text: 'Water deeply when top 1 inch of soil dries out. Never allow roots to sit in stagnant water.' },
+  { title: 'Ideal Sunlight & Temperature', text: 'Provide 4–6 hours of gentle morning sunlight. Protect sensitive foliage from scorching 40°C peak noon heat.' },
+  { title: 'Akadama & Soil Substrates', text: 'Use fast-draining akadama, lava rock, and coarse pumice mix to ensure healthy root respiration.' },
+  { title: 'Repotting Schedule', text: 'Repot young bonsai every 1–2 years in spring before new buds burst to encourage vibrant growth.' },
+  { title: 'Organic Fertilization', text: 'Feed with balanced organic liquid NPK every 2–3 weeks during active spring and rainy growing seasons.' }
 ]
 
 const galleryImages = [
   'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1599598425947-2206763844ea?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1613143323552-f9e7fec39e44?auto=format&fit=crop&w=900&q=80',
   'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
   'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
-  'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80',
-  'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=900&q=80'
 ]
 
 const testimonials = [
   {
-    name: 'Aarav Mehta',
-    quote: 'The bonsai we received was beautifully shaped and healthy. The care guidance was genuinely helpful.',
+    name: 'Rameshwar Tripathi',
+    quote: 'Visiting Shivanand ji’s nursery in Mawaiya Mirzapur was an incredible experience. The 12-year-old Ficus bonsai I purchased is thriving!',
     rating: 5,
+    location: 'Varanasi, UP'
   },
   {
-    name: 'Neha Kulkarni',
-    quote: 'Every plant felt thoughtfully nurtured. Shivanand’s knowledge and passion are obvious from the first conversation.',
+    name: 'Sunita Sharma',
+    quote: 'The detail provided for sunlight, humidity, and temperature requirements helped me care for my Monstera Albo perfectly.',
     rating: 5,
+    location: 'Mirzapur, UP'
   },
   {
-    name: 'Ritika Sinha',
-    quote: 'We purchased a rare indoor plant and it arrived in perfect condition. Premium quality and warm service.',
+    name: 'Anand Verma',
+    quote: 'Great collection of rare Adeniums and Japanese Maple. Genuine pricing and expert guidance straight from Shivanand ji.',
     rating: 5,
+    location: 'Prayagraj, UP'
   },
   {
-    name: 'Vikram Arora',
-    quote: 'A true collector’s nursery. The variety of bonsai and rare specimens feels curated, not mass-produced.',
+    name: 'Vikram Singh',
+    quote: 'Packed safely and delivered right to our garden. The 4-5 photo gallery on their site shows the exact quality you get!',
     rating: 5,
-  },
+    location: 'Lucknow, UP'
+  }
 ]
+
+function AnnouncementBar() {
+  return (
+    <div className="announcement-bar">
+      <div className="container announcement-inner">
+        <span>📍 <strong>Location:</strong> Village & Post Mawaiya, Mirzapur, Uttar Pradesh (UP) - 231001</span>
+        <span>📞 <strong>Call/WhatsApp:</strong> <a href="tel:+916388323228" style={{ color: 'inherit', textDecoration: 'underline' }}>+91 63883 23228</a></span>
+      </div>
+    </div>
+  )
+}
 
 function Navbar() {
   return (
     <header className="site-header">
       <nav className="navbar container" aria-label="Main navigation">
         <a href="#home" className="brand" aria-label="Shivanand Rare Botanicals home">
-          <span className="brand-mark">SRB</span>
+          <img src={founderImg} alt="Shivanand Singh" className="brand-avatar" />
           <span>
             <strong>Shivanand Rare Botanicals</strong>
-            <small>Rare Plants • Bonsai • Green Heritage</small>
+            <small>Village & Post Mawaiya, Mirzapur, UP</small>
           </span>
         </a>
 
@@ -227,7 +100,7 @@ function Navbar() {
         </div>
 
         <a href="#contact" className="nav-cta">
-          Enquire Now
+          Visit Nursery
         </a>
       </nav>
     </header>
@@ -240,21 +113,20 @@ function Hero() {
       <div className="hero-overlay" aria-hidden="true" />
       <div className="floating-leaf leaf-one" aria-hidden="true" />
       <div className="floating-leaf leaf-two" aria-hidden="true" />
-      <div className="floating-leaf leaf-three" aria-hidden="true" />
 
       <div className="container hero-inner">
         <div className="hero-copy">
-          <p className="eyebrow">Family-owned plant nursery</p>
-          <h1>Where Rare Plants Become Living Art.</h1>
+          <p className="eyebrow">🌱 Direct From Mawaiya, Mirzapur, UP</p>
+          <h1>Where Rare Plants & Master Bonsai Become Living Art.</h1>
           <p className="hero-subheading">
-            Discover rare botanicals, beautiful bonsai, and carefully nurtured plants from Shivanand Rare Botanicals.
+            Discover curated rare botanicals, 10-15 year shaped bonsai, and healthy outdoor greenery nurtured personally by <strong>Shivanand Singh</strong>.
           </p>
           <div className="hero-actions">
             <a href="#collection" className="button primary">
-              Explore Collection
+              Explore Plants & Rates
             </a>
             <a href="#contact" className="button secondary">
-              Contact Us
+              Contact & Directions
             </a>
           </div>
           <div className="hero-stat-row" aria-label="Nursery highlights">
@@ -264,11 +136,11 @@ function Hero() {
             </div>
             <div>
               <strong>500+</strong>
-              <span>Plants nurtured</span>
+              <span>Bonsai nurtured</span>
             </div>
             <div>
-              <strong>Curated</strong>
-              <span>Rare specimens</span>
+              <strong>Mawaiya</strong>
+              <span>Mirzapur, UP</span>
             </div>
           </div>
         </div>
@@ -276,13 +148,13 @@ function Hero() {
         <div className="hero-card">
           <div className="mini-plant-card">
             <img
-              src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80"
-              alt="Rare bonsai in a decorative pot"
+              src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80"
+              alt="Sculptural Ficus Bonsai at Shivanand Nursery"
             />
           </div>
           <div className="mini-card-badge">
             <span className="badge-dot" />
-            Rare bonsai collection
+            12-Yr Ficus Microcarpa Bonsai • ₹18,500
           </div>
         </div>
       </div>
@@ -290,63 +162,171 @@ function Hero() {
   )
 }
 
-function CategoryCard({ icon, title, subtitle, image }) {
-  return (
-    <article className="category-card">
-      <div className="category-image-wrap">
-        <img src={image} alt={title} />
-      </div>
-      <div className="category-copy">
-        <span className="category-icon">{icon}</span>
-        <h3>{title}</h3>
-        <p>{subtitle}</p>
-      </div>
-    </article>
-  )
-}
-
-function PlantCard({ plant }) {
+function PlantCard({ plant, onSelectPlant }) {
   return (
     <article className="plant-card">
-      <div className="plant-image-wrap">
-        <img src={plant.image} alt={plant.name} />
+      <div className="plant-image-wrap" onClick={() => onSelectPlant(plant)}>
+        <img src={plant.images[0]} alt={plant.name} />
+        <div className="photo-count-badge">
+          📸 {plant.images.length} Photos Available
+        </div>
       </div>
       <div className="plant-body">
         <div className="plant-meta">
+          <span className="category-pill">{plant.category}</span>
           <span className={`status ${plant.status.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
             {plant.status}
           </span>
         </div>
-        <h3>{plant.name}</h3>
-        <p>{plant.description}</p>
+        <h3 onClick={() => onSelectPlant(plant)}>{plant.name}</h3>
+        {plant.species && <p className="species-name"><em>{plant.species}</em></p>}
+        {plant.age && <p className="age-tag">⏳ Age: {plant.age}</p>}
+        <p className="plant-short-desc">{plant.shortDesc}</p>
+        
         <div className="plant-footer">
           <span className="price">{plant.price}</span>
-          <a href="#contact" className="text-link">
-            View Details
-          </a>
+          <button onClick={() => onSelectPlant(plant)} className="button primary-small">
+            View Details & Care Guide
+          </button>
         </div>
       </div>
     </article>
   )
 }
 
-function BonsaiCard({ bonsai }) {
+function PlantModal({ plant, onClose }) {
+  const [activeImgIndex, setActiveImgIndex] = useState(0)
+
+  if (!plant) return null
+
+  const whatsappUrl = `https://wa.me/916388323228?text=${encodeURIComponent(
+    `Hello Shivanand Nursery (Mawaiya, Mirzapur)! I want to inquire about purchasing ${plant.name} (Rate: ${plant.price}).`
+  )}`
+
   return (
-    <article className="bonsai-card">
-      <img src={bonsai.image} alt={bonsai.name} />
-      <div className="bonsai-body">
-        <div className="bonsai-topline">
-          <h3>{bonsai.name}</h3>
-          <span>{bonsai.price}</span>
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose} aria-label="Close modal">
+          ✕
+        </button>
+
+        <div className="modal-grid">
+          {/* Left Column: 4-5 Photos Gallery */}
+          <div className="modal-gallery">
+            <div className="main-image-frame">
+              <img src={plant.images[activeImgIndex]} alt={`${plant.name} photo ${activeImgIndex + 1}`} />
+              <span className="image-counter">Photo {activeImgIndex + 1} of {plant.images.length}</span>
+            </div>
+
+            <div className="thumbnail-strip">
+              {plant.images.map((imgUrl, idx) => (
+                <button
+                  key={idx}
+                  className={`thumb-btn ${idx === activeImgIndex ? 'active' : ''}`}
+                  onClick={() => setActiveImgIndex(idx)}
+                >
+                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column: Plant Info & Care Requirements */}
+          <div className="modal-details">
+            <div className="modal-header">
+              <span className="category-pill">{plant.category}</span>
+              <h2>{plant.name}</h2>
+              {plant.species && <p className="species-title"><em>{plant.species}</em></p>}
+              <div className="price-tag-row">
+                <span className="modal-price">{plant.price}</span>
+                <span className={`status ${plant.status.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
+                  {plant.status}
+                </span>
+              </div>
+            </div>
+
+            <p className="full-description">{plant.description}</p>
+
+            {/* Plant Care & Requirements Section */}
+            <div className="care-specs-box">
+              <h3>🌱 Care & Growing Requirements</h3>
+              <div className="specs-grid">
+                <div className="spec-item">
+                  <span className="spec-icon">🌡️</span>
+                  <div>
+                    <strong>Temperature</strong>
+                    <p>{plant.careSpecs.temperature}</p>
+                  </div>
+                </div>
+
+                <div className="spec-item">
+                  <span className="spec-icon">💧</span>
+                  <div>
+                    <strong>Humidity</strong>
+                    <p>{plant.careSpecs.humidity}</p>
+                  </div>
+                </div>
+
+                <div className="spec-item">
+                  <span className="spec-icon">☀️</span>
+                  <div>
+                    <strong>Sunlight</strong>
+                    <p>{plant.careSpecs.light}</p>
+                  </div>
+                </div>
+
+                <div className="spec-item">
+                  <span className="spec-icon">🚰</span>
+                  <div>
+                    <strong>Watering Frequency</strong>
+                    <p>{plant.careSpecs.water}</p>
+                  </div>
+                </div>
+
+                <div className="spec-item">
+                  <span className="spec-icon">🌱</span>
+                  <div>
+                    <strong>Soil & Substrate</strong>
+                    <p>{plant.careSpecs.soil}</p>
+                  </div>
+                </div>
+
+                <div className="spec-item">
+                  <span className="spec-icon">🧪</span>
+                  <div>
+                    <strong>Fertilizer Schedule</strong>
+                    <p>{plant.careSpecs.fertilizer}</p>
+                  </div>
+                </div>
+
+                <div className="spec-item">
+                  <span className="spec-icon">✂️</span>
+                  <div>
+                    <strong>Pruning & Repotting</strong>
+                    <p>{plant.careSpecs.pruning}</p>
+                  </div>
+                </div>
+
+                <div className="spec-item">
+                  <span className="spec-icon">🎯</span>
+                  <div>
+                    <strong>Difficulty Level</strong>
+                    <p>{plant.careSpecs.difficulty}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-actions">
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="button primary full-width">
+                💬 Inquire & Order via WhatsApp
+              </a>
+              <p className="delivery-note">📍 Available for pickup at Village Mawaiya, Mirzapur or safe home delivery across UP & India.</p>
+            </div>
+          </div>
         </div>
-        <ul>
-          <li><strong>Age:</strong> {bonsai.age}</li>
-          <li><strong>Species:</strong> {bonsai.species}</li>
-          <li><strong>Style:</strong> {bonsai.style}</li>
-          <li><strong>Care:</strong> {bonsai.difficulty}</li>
-        </ul>
       </div>
-    </article>
+    </div>
   )
 }
 
@@ -357,62 +337,26 @@ function AboutSection() {
         <div className="about-portrait-wrap">
           <div className="about-portrait">
             <img
-              src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80"
-              alt="Shivanand Singh"
+              src={founderImg}
+              alt="Shivanand Singh - Master Nursery Owner & Bonsai Artist"
             />
           </div>
         </div>
 
         <div className="about-copy">
           <p className="eyebrow">The Passion Behind Every Plant</p>
-          <h2>Shivanand Singh has a deep passion for plants, rare species, and the art of bonsai.</h2>
+          <h2>Shivanand Singh nurtures every bonsai & rare species with decades of mastery.</h2>
           <p>
-            What began as a personal interest has grown into a collection dedicated to preserving, nurturing, and sharing beautiful plants.
+            Located at <strong>Village and Post Mawaiya, Mirzapur, Uttar Pradesh</strong>, Shivanand Singh has devoted over 15 years to cultivating rare botanical specimens, ancient bonsai trees, and hardy flowering garden plants.
           </p>
           <blockquote>
-            “A plant is not just something we grow; it is something we nurture.”
+            “A plant is not just something we grow; it is a living sculpture that we nurture for generations.”
           </blockquote>
+          <div className="address-highlight-card">
+            <h4>🏡 Mawaiya Nursery Address:</h4>
+            <p>Village and Post Mawaiya, District Mirzapur, Uttar Pradesh (UP) - 231001</p>
+          </div>
         </div>
-      </div>
-    </section>
-  )
-}
-
-function GallerySection() {
-  return (
-    <section id="gallery" className="gallery-section">
-      <div className="container section-heading">
-        <p className="eyebrow">Our world in bloom</p>
-        <h2>Moments from the nursery</h2>
-      </div>
-      <div className="gallery-grid container">
-        {galleryImages.map((image, index) => (
-          <figure key={index} className={`gallery-item item-${index + 1}`}>
-            <img src={image} alt="Nursery collection" />
-          </figure>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function Testimonials() {
-  return (
-    <section className="testimonials-section">
-      <div className="container section-heading center-text">
-        <p className="eyebrow">Customer love</p>
-        <h2>What plant lovers say</h2>
-      </div>
-      <div className="container testimonials-grid">
-        {testimonials.map((item) => (
-          <article key={item.name} className="testimonial-card">
-            <div className="stars" aria-label={`${item.rating} star rating`}>
-              {'★'.repeat(item.rating)}
-            </div>
-            <p>“{item.quote}”</p>
-            <strong>{item.name}</strong>
-          </article>
-        ))}
       </div>
     </section>
   )
@@ -423,25 +367,46 @@ function ContactSection() {
     <section id="contact" className="contact-section">
       <div className="container contact-grid">
         <div className="contact-copy">
-          <p className="eyebrow">Visit or enquire</p>
-          <h2>Let’s help you find the perfect plant.</h2>
+          <p className="eyebrow">Visit Us or Order Online</p>
+          <h2>Let’s help you find & care for your perfect plant.</h2>
           <ul className="contact-list">
-            <li><span>Phone</span><a href="tel:+919876543210">+91 98765 43210</a></li>
-            <li><span>WhatsApp</span><a href="https://wa.me/919876543210">+91 98765 43210</a></li>
-            <li><span>Email</span><a href="mailto:hello@shivanandbotanicals.com">hello@shivanandbotanicals.com</a></li>
-            <li><span>Location</span><p>Green Heritage Nursery, Bengaluru, India</p></li>
+            <li>
+              <span>📍 Location / Address</span>
+              <p><strong>Shivanand Rare Botanicals Nursery</strong><br />Village and Post Mawaiya, Mirzapur, Uttar Pradesh (UP) - 231001</p>
+            </li>
+            <li>
+              <span>📞 Phone Number</span>
+              <p><a href="tel:+916388323228">+91 63883 23228</a></p>
+            </li>
+            <li>
+              <span>💬 WhatsApp Order</span>
+              <a href="https://wa.me/916388323228?text=Hello%20Shivanand%20Nursery!" target="_blank" rel="noopener noreferrer">
+                Chat on WhatsApp (+91 63883 23228)
+              </a>
+            </li>
+            <li>
+              <span>✉️ Email</span>
+              <a href="mailto:shivanandnursery.mawaiya@gmail.com">shivanandnursery.mawaiya@gmail.com</a>
+            </li>
+            <li>
+              <span>🕒 Nursery Timings</span>
+              <p>Monday – Sunday: 7:00 AM – 7:00 PM</p>
+            </li>
           </ul>
-          <a href="mailto:hello@shivanandbotanicals.com" className="button primary large">
-            Enquire About a Plant
-          </a>
         </div>
 
         <div className="contact-visual">
-          <div className="map-placeholder">
-            <span>Google Maps Placeholder</span>
-          </div>
-          <div className="social-placeholder">
-            <span>Instagram @shivanandrarebotanicals</span>
+          <div className="location-card">
+            <h3>🏡 Visit Our Mawaiya Nursery</h3>
+            <p>Explore hundreds of live bonsai trees, rare indoor plants, and garden pots in person at Mawaiya, Mirzapur.</p>
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Mawaiya+Mirzapur+Uttar+Pradesh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button secondary map-btn"
+            >
+              🗺️ Open in Google Maps (Mawaiya, Mirzapur)
+            </a>
           </div>
         </div>
       </div>
@@ -453,100 +418,144 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
-        <div>
-          <h3>Shivanand Rare Botanicals</h3>
-          <p>Rare Plants • Bonsai • Green Heritage</p>
+        <div className="footer-brand">
+          <img src={founderImg} alt="Shivanand Singh" className="footer-avatar" />
+          <div>
+            <h3>Shivanand Rare Botanicals</h3>
+            <p>Village & Post Mawaiya, Mirzapur, UP - 231001</p>
+          </div>
         </div>
 
         <nav aria-label="Footer navigation">
-          <a href="#home">Home</a>
-          <a href="#collection">Rare Plants</a>
-          <a href="#bonsai">Bonsai</a>
-          <a href="#about">About</a>
-          <a href="#care">Plant Care</a>
-          <a href="#gallery">Gallery</a>
-          <a href="#contact">Contact</a>
+          {navItems.map((item) => (
+            <a key={item.label} href={item.href}>
+              {item.label}
+            </a>
+          ))}
         </nav>
+      </div>
+      <div className="container copyright-line">
+        <p>© {new Date().getFullYear()} Shivanand Rare Botanicals • Mawaiya, Mirzapur, Uttar Pradesh. All rights reserved.</p>
       </div>
     </footer>
   )
 }
 
 function App() {
+  const [selectedPlant, setSelectedPlant] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // Filter plants based on Category and Search Query
+  const filteredPlants = useMemo(() => {
+    return plantsData.filter((plant) => {
+      const matchesCategory = selectedCategory === 'All' || plant.category === selectedCategory
+      const matchesSearch =
+        plant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (plant.species && plant.species.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        plant.category.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesCategory && matchesSearch
+    })
+  }, [selectedCategory, searchQuery])
+
+  // Separate bonsai list for the dedicated Bonsai section
+  const bonsaiList = useMemo(() => {
+    return plantsData.filter((plant) => plant.category === 'Bonsai')
+  }, [])
+
   return (
     <div className="page-shell">
+      <AnnouncementBar />
       <Navbar />
+
       <main>
         <Hero />
 
-        <section className="categories-section container">
-          <div className="section-heading">
-            <p className="eyebrow">Featured collections</p>
-            <h2>Curated for every plant story</h2>
-          </div>
-
-          <div className="category-grid">
-            {categories.map((category) => (
-              <CategoryCard key={category.title} {...category} />
-            ))}
-          </div>
-        </section>
-
+        {/* Collection & Rates Section */}
         <section id="collection" className="collection-section">
           <div className="container section-heading">
-            <p className="eyebrow">Rare plant collection</p>
-            <h2>Distinctive greens for collectors and homes</h2>
-          </div>
-
-          <div className="container product-grid">
-            {products.map((plant) => (
-              <PlantCard key={plant.name} plant={plant} />
-            ))}
-          </div>
-        </section>
-
-        <section id="bonsai" className="bonsai-showcase">
-          <div className="container section-heading">
-            <p className="eyebrow">Bonsai collection</p>
-            <h2>Living Sculptures, Crafted by Nature.</h2>
+            <p className="eyebrow">All Plants & Rates Catalogue</p>
+            <h2>Explore Rare Botanicals, Bonsai & Garden Greenery</h2>
             <p className="section-subtitle">
-              Every bonsai is carefully nurtured and shaped over time, bringing patience, balance and artistry into your home.
+              Click on any plant to view <strong>4–5 detailed photos</strong> and read full care requirements (temperature, humidity, sunlight, watering & soil mix).
             </p>
           </div>
 
-          <div className="container bonsai-grid">
-            {bonsaiCollection.map((bonsai) => (
-              <BonsaiCard key={bonsai.name} bonsai={bonsai} />
+          {/* Search & Category Filter Controls */}
+          <div className="container filter-container">
+            <div className="search-bar-wrap">
+              <span className="search-icon">🔍</span>
+              <input
+                type="text"
+                placeholder="Search plant by name or species (e.g. Ficus, Adenium, Maple)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+              />
+              {searchQuery && (
+                <button className="clear-search" onClick={() => setSearchQuery('')}>✕</button>
+              )}
+            </div>
+
+            <div className="category-pills-row">
+              {categoriesList.map((cat) => (
+                <button
+                  key={cat}
+                  className={`filter-pill ${selectedCategory === cat ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Products Grid */}
+          <div className="container product-grid">
+            {filteredPlants.length > 0 ? (
+              filteredPlants.map((plant) => (
+                <PlantCard key={plant.id} plant={plant} onSelectPlant={setSelectedPlant} />
+              ))
+            ) : (
+              <div className="no-results container">
+                <h3>No plants found matching "{searchQuery}"</h3>
+                <p>Try searching for another keyword or select "All" categories.</p>
+                <button className="button primary" onClick={() => { setSelectedCategory('All'); setSearchQuery('') }}>
+                  Reset Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Dedicated Bonsai Showcase Section */}
+        <section id="bonsai" className="bonsai-showcase">
+          <div className="container section-heading">
+            <p className="eyebrow">Masterpiece Collection</p>
+            <h2>Ancient Bonsai Trees, Shaped with Decades of Care</h2>
+            <p className="section-subtitle">
+              Nurtured directly at our Mawaiya Mirzapur nursery. Each tree has multiple photo perspectives and specific humidity & temperature care plans.
+            </p>
+          </div>
+
+          <div className="container product-grid">
+            {bonsaiList.map((bonsai) => (
+              <PlantCard key={bonsai.id} plant={bonsai} onSelectPlant={setSelectedPlant} />
             ))}
           </div>
         </section>
 
         <AboutSection />
 
-        <section className="features-section">
-          <div className="container section-heading center-text">
-            <p className="eyebrow">Why choose us</p>
-            <h2>Thoughtful care, exceptional plants</h2>
-          </div>
-
-          <div className="container features-grid">
-            {features.map((feature) => (
-              <div key={feature} className="feature-card">
-                <span>{feature.split(' ')[0]}</span>
-                <h3>{feature}</h3>
-              </div>
-            ))}
-          </div>
-        </section>
-
+        {/* Care Guide Section */}
         <section id="care" className="care-section">
           <div className="container section-heading">
-            <p className="eyebrow">Plant care guide</p>
-            <h2>Growing with confidence</h2>
+            <p className="eyebrow">Master Plant Care Guide</p>
+            <h2>Essential Care Rules for Healthy Greenery</h2>
           </div>
 
           <div className="container care-grid">
-            {careGuide.map((item) => (
+            {careGuideOverview.map((item) => (
               <article key={item.title} className="care-card">
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -555,14 +564,49 @@ function App() {
           </div>
         </section>
 
-        <GallerySection />
+        {/* Nursery Gallery */}
+        <section id="gallery" className="gallery-section">
+          <div className="container section-heading">
+            <p className="eyebrow">Direct From Mawaiya, Mirzapur</p>
+            <h2>Moments from Shivanand Nursery</h2>
+          </div>
+          <div className="gallery-grid container">
+            {galleryImages.map((image, index) => (
+              <figure key={index} className={`gallery-item item-${index + 1}`}>
+                <img src={image} alt="Shivanand Nursery collection photo" />
+              </figure>
+            ))}
+          </div>
+        </section>
 
-        <Testimonials />
+        <section className="testimonials-section">
+          <div className="container section-heading center-text">
+            <p className="eyebrow">Customer Experiences</p>
+            <h2>What Plant Lovers & Collectors Say</h2>
+          </div>
+          <div className="container testimonials-grid">
+            {testimonials.map((item) => (
+              <article key={item.name} className="testimonial-card">
+                <div className="stars" aria-label={`${item.rating} star rating`}>
+                  {'★'.repeat(item.rating)}
+                </div>
+                <p>“{item.quote}”</p>
+                <strong>{item.name}</strong>
+                <small className="location-tag">{item.location}</small>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <ContactSection />
       </main>
 
       <Footer />
+
+      {/* Interactive Modal when clicking any plant */}
+      {selectedPlant && (
+        <PlantModal plant={selectedPlant} onClose={() => setSelectedPlant(null)} />
+      )}
     </div>
   )
 }
