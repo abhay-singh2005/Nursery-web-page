@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --forest: #183726;
+  --forest-deep: #112b1e;
+  --sage: #7a9770;
+  --sage-soft: #dfe8d8;
+  --ivory: #f8f4ed;
+  --earth: #795a3d;
+  --gold: #c7a96a;
+  --muted: #5c665e;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', 'Segoe UI', sans-serif;
+  color: var(--forest);
+  background: var(--ivory);
+  font-family: var(--sans);
+  line-height: 1.6;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--ivory);
+  color: var(--forest);
+}
+
+body,
+button,
+a {
+  font-family: var(--sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--serif);
+  margin-top: 0;
+  line-height: 1.05;
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+#root {
+  min-height: 100vh;
+}
